@@ -363,7 +363,7 @@
     }
     const userPlans = db.plans.filter(p => p.targetUsername === currentUser.username);
     if (!userPlans.length) {
-      container.innerHTML = '<p style="color:#9ca3af">لم يقم المطور بإنشاء خطة غذائية لك بعد.</p>';
+      container.innerHTML = '<p style="color:#9ca3af">لم يقم أخصائي التغذية الأستاذ أحمد الهوى بإنشاء خطة غذائية لك بعد</p>';
       return;
     }
     container.innerHTML = userPlans.map(p => `
