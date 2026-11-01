@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUTRICORE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <!-- مكتبة html2pdf لتصدير خطة العميل بملف PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- 1. واجهة تسجيل الدخول / إنشاء حساب -->
+        <section id="auth-screen" class="screen active">
+            <div class="glass-card">
+                <h1 class="logo-title">NUTRICORE</h1>
+                <h3 class="welcome-text">Welcome :</h3>
+
+                <form id="auth-form">
+                    <div class="input-group">
+                        <label>Email or Username</label>
+                        <input type="text" id="auth-email" placeholder="ضع البريد أو اليوزرنيم" required>
+                    </div>
+
+                    <div id="username-field-group" class="input-group hidden">
+                        <label>Username</label>
+                        <input type="text" id="auth-username" placeholder="اختر اسم مستخدم فريد">
+                        <small class="hint">احفظ اليوزرنيم جيداً، سيلزمك لتلقي الخطط وتسجيل الدخول.</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="auth-password" placeholder="ضع كلمة المرور" required>
+                    </div>
+
+                    <div class="auth-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <span>تذكرني</span>
+                        </label>
+                        <a href="#" class="forgot-pass" onclick="alert('يرجى التواصل مع المطور لإعادة تعيين كلمة المرور')">Forget Password ?</a>
+                    </div>
+
+                    <button type="submit" id="btn-submit-auth" class="btn-primary">تسجيل دخول</button>
+
+                    <div class="divider">or</div>
+
+                    <button type="button" id="btn-toggle-mode" class="btn-secondary">إنشاء حساب جديد</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- نافذة التحقق الخاصة بالمطور -->
+        <div id="dev-modal" class="modal hidden">
+            <div class="modal-content glass-card">
+                <h3>تأكيد هوية المطور</h3>
+                <p>يرجى إدخال الكلمة السرية للمطور للمتابعة:</p>
+                <input type="password" id="dev-pass-input" placeholder="كلمة المرور السرية">
+                <div class="modal-actions">
+                    <button id="btn-dev-confirm" class="btn-primary">دخول كمطور</button>
+                    <button id="btn-dev-cancel" class="btn-secondary">إلغاء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. واجهات التطبيق الرئيسية (بعد الدخول) -->
+        <main id="main-app" class="hidden">
+            
+            <!-- تبويب الرئيسية -->
+            <section id="tab-home" class="tab-content active">
+                <header class="tab-header">
+                    <h2>الرئيسية</h2>
+                </header>
+                
+                <!-- مستطيل الإحصائيات الأربعة -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span id="stat-users">0</span>
+                        <label>المستخدمين</label>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-plans">0</span>
+                        <label>الخطط المنشأة</label>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-foods">150+</span>
+                        <label>الأطعمة بالقاعدة</label>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-rating">5.0 ★</span>
+                        <label>تقييم التطبيق</label>
+                    </div>
+                </div>
+
+                <!-- شريط التقييم -->
+                <div class="rating-section glass-card">
+                    <p>قــيّــم الـتـطـبـيـق</p>
+                    <div class="stars-container" id="stars-wrapper">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <button id="btn-submit-rating" class="btn-small">تم</button>
+                </div>
+
+                <!-- لوحة المطور الخاصة بإنهاء وإدارة الحسابات -->
+                <div id="dev-admin-panel" class="glass-card hidden">
+                    <h3>سجل الأعضاء المسجلين (صلاحيات المطور)</h3>
+                    <div class="table-wrapper">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>اليوزرنيم</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>كلمة المرور</th>
+                                    <th>إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- سيتم تعبئة البيانات برمجياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حقوق النشر -->
+                <footer class="app-footer">
+                    جميع الحقوق محفوظة لـِ أحمد الهوى 2026 ©
+                </footer>
+            </section>
+
+            <!-- تبويب خطط العملاء (للمطور) / خطتي (للمستخدم) -->
+            <section id="tab-plans" class="tab-content">
+                <header class="tab-header">
+                    <h2 id="plans-tab-title">خطتي</h2>
+                </header>
+
+                <!-- نموذج إنشاء خطة جديدة (يظهر للمطور فقط) -->
+                <div id="dev-create-plan" class="glass-card hidden">
+                    <h3>إنشاء خطة غذائية لعميل</h3>
+                    <input type="text" id="plan-target-user" placeholder="اسم مستخدم العميل (Username)">
+                    <input type="text" id="plan-title" placeholder="عنوان الخطة (مثال: خطة التنشيف)">
+                    <textarea id="plan-content" rows="4" placeholder="تفاصيل الخطة الغذائية والتعليمات..."></textarea>
+                    <button id="btn-save-plan" class="btn-primary">إرسال الخطة للعميل</button>
+                </div>
+
+                <!-- قائمة عرض الخطط -->
+                <div id="plans-list" class="plans-container">
+                    <!-- سيتم تعبئة الخطط هنا -->
+                </div>
+            </section>
+
+            <!-- تبويب خطط مجانية -->
+            <section id="tab-free-pdf" class="tab-content">
+                <header class="tab-header">
+                    <h2>خطط مجانية</h2>
+                </header>
+                <div class="pdf-list">
+                    <div class="pdf-card glass-card">
+                        <h4>دليل التغذية العلاجية للبدناء</h4>
+                        <a href="./pdfs/Guide_to_Therapeutic_Nutrition.pdf" target="_blank" class="btn-small">عرض / تحميل PDF</a>
+                    </div>
+                    <div class="pdf-card glass-card">
+                        <h4>دليل جهاز الأنبدي وتحليل مكونات الجسم</h4>
+                        <a href="./pdfs/Guide_to_an_intrabody_device.pdf" target="_blank" class="btn-small">عرض / تحميل PDF</a>
+                    </div>
+                    <div class="pdf-card glass-card">
+                        <h4>دليل التغذية العلاجية لمرضى الكلى</h4>
+                        <a href="./pdfs/Treatment_of_kidney_patients.pdf" target="_blank" class="btn-small">عرض / تحميل PDF</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- تبويب حسابي -->
+            <section id="tab-profile" class="tab-content">
+                <header class="tab-header">
+                    <h2>حسابي</h2>
+                </header>
+                <div class="profile-card glass-card">
+                    <div class="avatar-wrapper">
+                        <img id="profile-img-preview" src="https://via.placeholder.com/100" alt="Profile Picture">
+                        <input type="file" id="profile-img-input" accept="image/*">
+                        <button class="btn-small" onclick="document.getElementById('profile-img-input').click()">تغيير الصورة</button>
+                    </div>
+
+                    <div class="profile-fields">
+                        <div class="input-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" id="prof-fullname" placeholder="الاسم الكامل">
+                        </div>
+                        <div class="input-group">
+                            <label>اسم المستخدم (Username)</label>
+                            <input type="text" id="prof-username">
+                            <small class="hint-warning">تنبيه: لن تتمكن من تغيير اليوزر إلا مرة واحدة في الأسبوع!</small>
+                        </div>
+                        <button id="btn-update-profile" class="btn-primary">حفظ التغييرات</button>
+                    </div>
+
+                    <hr class="divider-line">
+
+                    <div class="change-password-box">
+                        <h4>تغيير كلمة المرور</h4>
+                        <input type="password" id="pass-old" placeholder="كلمة المرور القديمة">
+                        <input type="password" id="pass-new" placeholder="كلمة المرور الجديدة">
+                        <button id="btn-change-pass" class="btn-secondary">تحديث كلمة المرور</button>
+                    </div>
+
+                    <hr class="divider-line">
+
+                    <div class="danger-zone">
+                        <button id="btn-logout" class="btn-small danger-btn">تسجيل الخروج</button>
+                        <button id="btn-delete-account" class="btn-small danger-btn-outline">حذف الحساب نهائياً</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- شريط التنقل السفلي -->
+            <nav class="bottom-nav">
+                <button class="nav-btn active" data-tab="tab-home">الرئيسية</button>
+                <button class="nav-btn" data-tab="tab-plans" id="nav-plans-btn">خطتي</button>
+                <button class="nav-btn" data-tab="tab-free-pdf">خطط مجانية</button>
+                <button class="nav-btn" data-tab="tab-profile">حسابي</button>
+            </nav>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
