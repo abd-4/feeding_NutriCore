@@ -133,9 +133,7 @@
     </div>
   </section>
 
-  <!-- خطط مجانية -->
-  <section id="freePlansView" class="view">
-    <!-- خطط مجانية - القسم المعدل -->
+  <!-- خطط مجانية - القسم المعدل -->
   <section id="freePlansView" class="view">
     <div class="card">
       <h3 style="margin-top:0;color:#c4b5fd">الخطط والملفات المجانية</h3>
@@ -346,7 +344,7 @@
     const title = document.getElementById('planTitleInput').value.trim();
     const content = document.getElementById('planContentInput').value.trim();
 
-    if (!targetUsername || !title || !content) { alert.apply(null, ['يرجى ملء جميع الحقول']); return; }
+    if (!targetUsername || !title || !content) { alert('يرجى ملء جميع الحقول'); return; }
     
     db.plans.push({ targetUsername, title, content, date: new Date().toLocaleDateString() });
     saveDb();
