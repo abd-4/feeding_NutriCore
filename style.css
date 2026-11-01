@@ -1,0 +1,346 @@
+:root {
+    --bg-color: #0b021a;
+    --card-bg: rgba(25, 12, 45, 0.75);
+    --primary-color: #8a2be2;
+    --accent-glow: #a855f7;
+    --text-color: #ffffff;
+    --text-muted: #b3b3b3;
+    --gold-star: #ffd700;
+    --danger-color: #ff4d4d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 50% 30%, #3b0764 0%, #0b021a 70%);
+}
+
+#app {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Glassmorphism Design */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    width: 100%;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 15px rgba(138, 43, 226, 0.3);
+}
+
+/* Auth Section */
+.logo-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #e9d5ff;
+    text-shadow: 0 0 10px var(--accent-glow);
+    margin-bottom: 5px;
+}
+
+.welcome-text {
+    text-align: center;
+    font-style: italic;
+    color: #d8b4fe;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    color: var(--text-muted);
+}
+
+input[type="text"], input[type="password"], textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #6b21a8;
+    background: rgba(15, 5, 29, 0.8);
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.hint {
+    font-size: 0.72rem;
+    color: #a7f3d0;
+    margin-top: 4px;
+}
+
+.hint-warning {
+    font-size: 0.72rem;
+    color: #fca5a5;
+    margin-top: 4px;
+}
+
+.auth-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.forgot-pass {
+    color: #c084fc;
+    text-decoration: none;
+}
+
+.btn-primary, .btn-secondary, .btn-small {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #7e22ce, #a855f7);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent-glow);
+    color: #fff;
+}
+
+.btn-small {
+    padding: 8px 15px;
+    border-radius: 8px;
+    background: #6b21a8;
+    color: white;
+    width: auto;
+}
+
+.divider {
+    text-align: center;
+    margin: 15px 0;
+    color: var(--text-muted);
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    padding: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Main Dashboard UI */
+#main-app {
+    padding-bottom: 70px;
+    width: 100%;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Stats Block */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: rgba(30, 10, 60, 0.8);
+    border: 1px solid #7e22ce;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stat-card span {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #f3e8ff;
+}
+
+.stat-card label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Rating */
+.rating-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.stars-container {
+    margin: 10px 0;
+}
+
+.star {
+    font-size: 1.8rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: var(--gold-star);
+    text-shadow: 0 0 8px var(--gold-star);
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: 60px;
+    background: rgba(15, 5, 29, 0.95);
+    border-top: 1px solid #6b21a8;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.nav-btn.active {
+    color: #c084fc;
+    font-weight: bold;
+}
+
+.app-footer {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 40px;
+}
+
+/* Admin Table */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #581c87;
+    text-align: right;
+}
+
+.danger-btn {
+    background: var(--danger-color);
+}
+
+.danger-btn-outline {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    margin-top: 8px;
+}
+
+/* Profile Elements */
+.avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.avatar-wrapper img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-glow);
+    object-fit: cover;
+}
+
+.divider-line {
+    border: 0;
+    height: 1px;
+    background: #581c87;
+    margin: 20px 0;
+}
