@@ -209,8 +209,8 @@
 <script>
 (() => {
   'use strict';
-  const DEV_EMAIL = 'abdalqadr3518@gmail.com';
-  const DEV_PASS = 'ABDALQADR_DEVELOPER';
+  const DEV_EMAIL = 'lionking1111112211@gmail.com';
+  const DEV_PASS = 'AHMED_DEVELOPER';
 
   let db = JSON.parse(localStorage.getItem('nutricore_db') || '{"users":[], "plans":[], "ratings":[]}');
   let currentUser = JSON.parse(localStorage.getItem('nutricore_current') || 'null');
@@ -271,7 +271,7 @@
     } else {
       // فحص المطور
       if (email === DEV_EMAIL) {
-        const pin = prompt('أدخل كلمة سر المطور (ABDALQADR_DEVELOPER):');
+        const pin = prompt('أدخل كلمة سر المطور (AHMED_DEVELOPER):');
         if (pin !== DEV_PASS) { alert('كلمة سر المطور غير صحيحة!'); return; }
       }
       
