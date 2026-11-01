@@ -3,436 +3,562 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#176b57">
-<title>NutriCore - نظام أخصائي التغذية</title>
+<meta name="theme-color" content="#120822">
+<title>NUTRICORE - تطبيق أخصائي التغذية</title>
 <style>
-:root{--green:#176b57;--green2:#21856b;--ink:#192d29;--muted:#6b7e79;--bg:#0b1310;--line:#1c332b;--card:#111d18;--soft:#162a22;--orange:#d87936;--red:#b64c4c;--gold:#f39c12;--shadow:0 8px 26px rgba(0,0,0,.4)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:Tahoma,Arial,sans-serif;line-height:1.55}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--green);color:#fff;font-weight:700}button:hover{filter:brightness(1.05)}button.secondary{background:#1a382e;color:#bdebd7}button.danger{background:#3d1a1a;color:var(--red)}input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#15241e;color:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--green2);box-shadow:0 0 0 3px #21856b33}label{display:block;color:#8fa8a0;font-size:13px;font-weight:700;margin-bottom:6px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}.auth-container{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at center, #1b3a30 0%, #0b1310 100%)}.auth-box{width:min(400px,100%);background:#121f1a;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.6);text-align:center}.auth-box h1{color:#bdebd7;margin-bottom:4px;font-size:26px;letter-spacing:1px}.auth-box p{color:var(--muted);font-size:13px;margin-bottom:20px}.app-header{background:linear-gradient(115deg,#124f42,#21856b);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}.layout{max-width:1100px;margin:auto;padding:20px 15px 80px}.nav-bottom{position:fixed;bottom:0;left:0;right:0;background:#0e1714;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px;z-index:1000}.nav-bottom button{background:transparent;color:var(--muted);border:0;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px}.nav-bottom button.active{color:#bdebd7;background:#162a22;border-radius:10px}.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}@media(min-width:768px){.stat-grid{grid-template-columns:repeat(4,1fr)}}.stat-card{background:#152620;border:1px solid var(--line);padding:14px;border-radius:14px;text-align:center}.stat-card strong{font-size:22px;color:#bdebd7;display:block}.stat-card span{font-size:11px;color:var(--muted)}.stars{display:flex;justify-content:center;gap:6px;font-size:24px;cursor:pointer;color:#4a625a;margin:8px 0}.stars span.active{color:var(--gold)}.view{display:none}.view.active{display:block}.hidden{display:none!important}.list-item{background:#162620;border:1px solid var(--line);padding:12px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}.copyright{text-align:center;color:var(--muted);font-size:12px;margin:25px 0 10px}
+:root{--purple-bg:#0b0218;--purple-card:#16092b;--purple-border:#4a2278;--purple-glow:#9d4edd;--purple-btn:#7b2cbf;--purple-btn-hover:#9d4edd;--text-main:#f4eeff;--text-muted:#b19ffb;--accent:#e0aaff}
+*{box-sizing:border-box}body{margin:0;background:var(--purple-bg);color:var(--text-main);font-family:Tahoma,Arial,sans-serif;line-height:1.6}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:12px 18px;background:var(--purple-btn);color:#fff;font-weight:700;transition:.2s}button:hover{background:var(--purple-btn-hover);filter:brightness(1.1)}button.secondary{background:rgba(255,255,255,.08);color:var(--accent);border:1px solid var(--purple-border)}button.danger{background:#5a189a;color:#ff70a6}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--purple-border);border-radius:14px;background:rgba(22,9,43,.8);color:var(--text-main);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--purple-glow);box-shadow:0 0 0 3px rgba(157,78,221,.25)}label{display:block;color:var(--text-muted);font-size:13px;font-weight:700;margin-bottom:6px}
+.auth-screen{position:fixed;inset:0;background:radial-gradient(circle at center, #240046 0%, #0b0218 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.auth-card{width:min(400px,100%);background:rgba(22,9,43,0.85);border:2px solid var(--purple-border);border-radius:30px;padding:30px 24px;box-shadow:0 0 40px rgba(157,78,221,.3);text-align:center;backdrop-filter:blur(10px)}
+.auth-logo{font-size:26px;font-weight:900;letter-spacing:2px;background:linear-gradient(45deg,#fff,#c77dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.auth-sub{font-size:16px;color:var(--accent);margin-bottom:24px;font-weight:bold}
+.auth-group{text-align:right;margin-bottom:16px}
+.auth-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px;color:var(--text-muted)}
+.remember-box{display:flex;align-items:center;gap:6px;cursor:pointer}
+.app-header{background:linear-gradient(135deg,#240046,#3c096c);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--purple-border)}
+.brand{display:flex;align-items:center;gap:12px}.logo-box{width:42px;height:42px;border-radius:12px;background:var(--purple-btn);display:grid;place-items:center;font-size:20px}
+.layout{max-width:1100px;margin:auto;padding:20px 16px 80px}
+.nav-bottom{position:fixed;bottom:0;left:0;right:0;background:var(--purple-card);border-top:1px solid var(--purple-border);display:flex;justify-content:around;padding:10px;z-index:1000;box-shadow:0 -5px 20px rgba(0,0,0,.5)}
+.nav-bottom button{background:transparent;color:var(--text-muted);border-radius:10px;padding:8px 12px;font-size:12px;flex:1;border:0}
+.nav-bottom button.active{background:var(--purple-btn);color:#fff}
+.view{display:none}.view.active{display:block}
+.card{background:var(--purple-card);border:1px solid var(--purple-border);border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.3);margin-bottom:16px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.stat-box{background:rgba(11,2,24,.6);border:1px solid var(--purple-border);border-radius:14px;padding:14px;text-align:center}
+.stat-box strong{font-size:22px;color:var(--accent);display:block;margin-top:4px}
+.stat-box span{font-size:11px;color:var(--text-muted)}
+.stars-row{display:flex;align-items:center;justify-content:center;gap:8px;font-size:24px;margin:12px 0;cursor:pointer}
+.star{color:rgba(255,255,255,0.2);transition:.2s}.star.active{color:#ffb703}
+.list{display:grid;gap:10px}.list-item{background:rgba(11,2,24,.5);border:1px solid var(--purple-border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.footer-copy{text-align:center;color:var(--text-muted);font-size:12px;margin:24px 0 10px}
+.hidden{display:none!important}
+@media(max-width:768px){.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 
-<!-- شاشة تسجيل الدخول -->
-<div id="authView" class="auth-container">
-  <div class="auth-box">
-    <h1>NUTRICORE</h1>
-    <p>Welcome :</p>
-    <form id="loginForm" style="text-align:right">
-      <label>Email address</label>
-      <input type="email" id="loginEmail" placeholder="ضع البريد الإلكتروني" required>
-      <label style="margin-top:12px">Password</label>
-      <input type="password" id="loginPassword" placeholder="ضع كلمة المرور" required>
-      
-      <div id="devPasswordWrapper" class="hidden" style="margin-top:12px">
-        <label style="color:var(--gold)">كلمة سر المطور المطلوبة</label>
-        <input type="password" id="devPasswordInput" placeholder="أدخل كلمة سر المطور">
+<!-- شاشة تسجيل الدخول المطابقة للصورة والمواصفات -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">NUTRICORE</div>
+    <div class="auth-sub">Welcome :</div>
+    <form id="loginForm">
+      <div class="auth-group">
+        <label>Email address</label>
+        <input id="loginEmail" type="email" placeholder="ضع البريد الإلكتروني أو اليوزر" required>
       </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;font-size:13px">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-          <input type="checkbox" id="rememberMe" style="width:auto"> تذكرني
-        </label>
-        <span style="color:var(--muted);cursor:pointer">Forget Password ?</span>
+      <div class="auth-group">
+        <label>Password</label>
+        <input id="loginPass" type="password" placeholder="ضع كلمة المرور" required>
       </div>
-
-      <button type="submit" style="width:100%;margin-top:5px">تسجيل دخول</button>
-      <div style="text-align:center;margin:14px 0;color:var(--muted);font-size:12px">or</div>
-      <button type="button" class="secondary" id="goToRegister" style="width:100%">إنشاء حساب جديد</button>
+      <div class="auth-row">
+        <span style="color:var(--accent);cursor:pointer" id="forgotPassLink">Forget Password ?</span>
+        <label class="remember-box"><input type="checkbox" id="rememberMe"> تذكرني</label>
+      </div>
+      <button type="submit" style="width:100%;margin-bottom:14px">تسجيل دخول</button>
+      <div style="color:var(--text-muted);font-size:12px;margin-bottom:10px">or</div>
+      <button type="button" class="secondary" id="switchToRegister" style="width:100%">إنشاء حساب جديد</button>
     </form>
-
-    <form id="registerForm" class="hidden" style="text-align:right">
-      <label>اسم المستخدم (Username - فريد)</label>
-      <input type="text" id="regUsername" placeholder="أنشئ يوزرنيم (لا تنساه!)" required>
-      <label style="margin-top:10px">البريد الإلكتروني</label>
-      <input type="email" id="regEmail" placeholder="ضع البريد الإلكتروني" required>
-      <label style="margin-top:10px">كلمة المرور</label>
-      <input type="password" id="regPassword" placeholder="ضع كلمة المرور" required>
-      <button type="submit" style="width:100%;margin-top:15px">إنشاء الحساب</button>
-      <button type="button" class="secondary" id="goToLogin" style="width:100%;margin-top:8px">العودة لتسجيل الدخول</button>
-    </form>
-    <p id="authError" style="color:var(--red);font-size:12px;margin-top:10px"></p>
   </div>
 </div>
 
-<!-- التطبيق الرئيسي -->
-<div id="mainAppView" class="hidden">
-  <header class="app-header">
-    <div style="font-weight:bold;font-size:18px">NutriCore 🥗</div>
-    <div id="headerUserRole" style="font-size:12px;background:#152e25;padding:5px 10px;border-radius:8px"></div>
-  </header>
-
-  <main class="layout">
-    <!-- تبويب الرئيسية -->
-    <section id="tabHome" class="view active">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <span id="statTotalUsers">0</span>
-          <span>إجمالي المستخدمين</span>
-        </div>
-        <div class="stat-card">
-          <span id="statTotalPlans">0</span>
-          <span>الخطط الغذائية</span>
-        </div>
-        <div class="stat-card">
-          <span id="statTotalFoods">3</span>
-          <span>قاعدة الأطعمة</span>
-        </div>
-        <div class="stat-card">
-          <span id="statRatingVal">0%</span>
-          <span>تقييم التطبيق</span>
-        </div>
+<!-- نافذة إنشاء حساب جديد -->
+<div id="registerModal" class="auth-screen hidden">
+  <div class="auth-card" style="text-align:right">
+    <h2 style="margin-top:0;color:var(--accent)">إنشاء حساب جديد</h2>
+    <form id="registerForm">
+      <div class="auth-group"><label>البريد الإلكتروني</label><input id="regEmail" type="email" required placeholder="name@example.com"></div>
+      <div class="auth-group"><label>كلمة المرور</label><input id="regPass" type="password" required placeholder="••••••••"></div>
+      <div class="auth-group"><label>اسم المستخدم (يوزرنيم فريد)</label><input id="regUser" type="text" required placeholder="اختر يوزر لا تنساه لتسجيل الدخول به">
+        <small style="color:#ff70a6;font-size:11px;display:block;margin-top:4px">⚠️ احفظ اليوزر جيداً، سيُستخدم بدلاً من البريد!</small></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button type="submit" style="flex:1">تسجيل</button>
+        <button type="button" class="secondary" id="cancelRegister" style="flex:1">إلغاء</button>
       </div>
-
-      <!-- شريط التقييم -->
-      <div class="card" style="text-align:center">
-        <p style="margin:0 0 5px;font-weight:bold">قــيّــم الـتـطـبـيـق</p>
-        <div class="stars" id="ratingStars">
-          <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
-        </div>
-        <button class="secondary small" id="submitRatingBtn" style="margin-top:6px">تم</button>
-      </div>
-
-      <!-- لوحة تحكم المطور الظاهرة حصراً للمطور -->
-      <div id="developerPanel" class="card hidden">
-        <h3 style="color:var(--gold);margin-top:0">🛠️ لوحة تحكم المطور</h3>
-        <p style="font-size:12px;color:var(--muted)">سجل الأعضاء المسجلين والتحكم بالحسابات:</p>
-        <div id="devUsersList"></div>
-      </div>
-
-      <div class="copyright">جميع الحقوق محفوظة لـ "أحمد الهوى" 2026 ©</div>
-    </section>
-
-    <!-- تبويب خطط العملاء / خطتي -->
-    <section id="tabPlans" class="view">
-      <div id="developerPlanCreator" class="card hidden">
-        <h3>إعداد خطة غذائية للعميل</h3>
-        <input type="text" id="targetUsernames" placeholder="يوزر العميل (مثال: ahmad_user)" style="margin-bottom:10px">
-        <textarea id="planContentText" rows="3" placeholder="تفاصيل الخطة الغذائية..." style="margin-bottom:10px"></textarea>
-        <button id="sendPlanBtn">إرسال الخطة للعميل</button>
-      </div>
-      <div class="card">
-        <h3 id="plansSectionTitle">خطتي الغذائية</h3>
-        <div id="userPlansContainer"></div>
-      </div>
-    </section>
-
-    <!-- تبويب خطط مجانية -->
-    <section id="tabFreePlans" class="view">
-      <div class="card">
-        <h3>الخطط والدلائل المجانية (PDF)</h3>
-        <div class="list-item">
-          <div>
-            <strong>دليل التغذية العلاجية للبدناء</strong>
-            <small style="color:var(--muted)">Guide_to_Therapeutic_Nutrition.pdf</small>
-          </div>
-          <button class="small" onclick="alert('جاري تحميل الملف من مجلد pdfs...')">تحميل PDF</button>
-        </div>
-        <div class="list-item">
-          <div>
-            <strong>دليل جهاز الأنبدي وتحليل مكونات الجسم</strong>
-            <small style="color:var(--muted)">Guide_to_an_intrabody_device.pdf</small>
-          </div>
-          <button class="small" onclick="alert('جاري تحميل الملف من مجلد pdfs...')">تحميل PDF</button>
-        </div>
-        <div class="list-item">
-          <div>
-            <strong>دليل التغذية العلاجية لمرضى الكلى</strong>
-            <small style="color:var(--muted)">Treatment_of_kidney_patients.pdf</small>
-          </div>
-          <button class="small" onclick="alert('جاري تحميل الملف من مجلد pdfs...')">تحميل PDF</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- تبويب حسابي -->
-    <section id="tabAccount" class="view">
-      <div class="card">
-        <h3>حسابي الشخصي</h3>
-        <label>صورة البروفايل (رابط الصورة)</label>
-        <input type="text" id="accAvatar" placeholder="رابط صورة شخصية">
-        
-        <label style="margin-top:10px">اسم صاحب الحساب</label>
-        <input type="text" id="accName">
-
-        <label style="margin-top:10px">يوزرنيم المستخدم (يُتتاح التغيير مرة كل أسبوع)</label>
-        <input type="text" id="accUsername">
-        <small style="color:var(--orange);font-size:11px">تنبيه: لن تتمكن من تغيير اليوزر إلا مرة في الأسبوع.</small>
-
-        <label style="margin-top:10px">كلمة المرور القديمة (للتأكيد)</label>
-        <input type="password" id="oldPasswordAcc" placeholder="كلمة المرور السابقة">
-
-        <label style="margin-top:10px">كلمة المرور الجديدة</label>
-        <input type="password" id="newPasswordAcc" placeholder="كلمة المرور الجديدة (اختياري)">
-
-        <div style="display:flex;gap:10px;margin-top:15px">
-          <button id="saveAccountChanges">حفظ التعديلات</button>
-          <button class="secondary" id="logoutBtn">تسجيل خروج</button>
-        </div>
-
-        <hr style="border-color:var(--line);margin:20px 0">
-        
-        <label style="color:var(--red)">حذف الحساب بشكل نهائي</label>
-        <input type="password" id="deleteAccPassword" placeholder="أدخل كلمة المرور لتأكيد الحذف" style="margin-bottom:10px">
-        <button class="danger" id="deleteAccountBtn">حذف حسابي نهائياً</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- شريط التنقل السفلي -->
-  <nav class="nav-bottom">
-    <button class="active" data-tab="tabHome">🏠 <span>الرئيسية</span></button>
-    <button data-tab="tabPlans" id="navPlansBtn">📋 <span>خطتي</span></button>
-    <button data-tab="tabFreePlans">📚 <span>خطط مجانية</span></button>
-    <button data-tab="tabAccount">⚙️ <span>حسابي</span></button>
-  </nav>
+    </form>
+  </div>
 </div>
 
+<!-- نافذة كلمة سر المطور -->
+<div id="devModal" class="auth-screen hidden">
+  <div class="auth-card">
+    <h3 style="color:var(--accent)">تحقق صلاحيات المطور</h3>
+    <p style="font-size:13px;color:var(--text-muted)">أدخل كلمة سر المطور الخاصة بك:</p>
+    <form id="devForm">
+      <div class="auth-group"><input id="devSecret" type="password" required placeholder="كلمة سر المطور"></div>
+      <div style="display:flex;gap:10px"><button type="submit" style="flex:1">دخول كمطور</button><button type="button" class="secondary" id="cancelDev" style="flex:1">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- هيكل التطبيق الرئيسي -->
+<header class="app-header">
+  <div class="brand"><div class="logo-box">🥗</div><div><h1 id="appTitle" style="font-size:18px;margin:0">تطبيق أخصائي التغذية</h1><p style="margin:0;font-size:11px;color:var(--text-muted)">متابعة العملاء والخطط الغذائية</p></div></div>
+  <button class="secondary" id="logoutTopBtn" style="padding:6px 12px;font-size:12px">تسجيل خروج</button>
+</header>
+
+<main class="layout">
+  <!-- تبويب الرئيسية -->
+  <section id="homeView" class="view active">
+    <div class="card">
+      <h3 style="margin-top:0">إحصائيات التطبيق العامّة</h3>
+      <div class="stat-grid">
+        <div class="stat-box"><span>إجمالي المستخدمين</span><strong id="statUsers">0</strong></div>
+        <div class="stat-box"><span>الخطط المنشأة</span><strong id="statPlansCount">0</strong></div>
+        <div class="stat-box"><span>أطعمة القاعدة</span><strong id="statFoodsCount">3</strong></div>
+        <div class="stat-box"><span>تقييم التطبيق</span><strong id="statRating">0 / 5</strong></div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <h4 style="margin:0 0 10px">قــيّــم الـتـطـبـيـق</h4>
+      <div class="stars-row" id="ratingStars">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+      <button class="secondary" id="submitRatingBtn" style="padding:6px 20px">تم</button>
+    </div>
+
+    <div class="footer-copy">
+      جميع الحقوق محفوظة لـ "أحمد الهوى" 2026 ©
+    </div>
+  </section>
+
+  <!-- تبويب خطط العملاء (للمطور) / خطتي (للعميل) -->
+  <section id="plansView" class="view">
+    <div class="card">
+      <div id="developerPlanSection" class="hidden">
+        <h3 style="margin-top:0">إدارة خطط العملاء (لوحة المطور)</h3>
+        <div style="display:grid;gap:10px;margin-bottom:14px">
+          <div><label>يوزر أو إيميل العميل المستهدف</label><input id="targetUserQuery" placeholder="أدخل يوزر العميل..."></div>
+          <div><label>عنوان أو وصف الخطة</label><input id="planTitleInput" placeholder="مثلاً: خطة تخسيس الأسبوع الأول"></div>
+          <div><label>تفاصيل الوجبات والتعليمات</label><textarea id="planContentInput" rows="4" placeholder="اكتب تفاصيل النظام الغذائي هنا..."></textarea></div>
+          <button id="saveClientPlanBtn">إرسال الخطة إلى حساب العميل</button>
+        </div>
+        <hr style="border-color:var(--purple-border);margin:20px 0">
+      </div>
+      <h3>الخطط الغذائية</h3>
+      <div id="myPlansContainer" class="list">
+        <div style="color:var(--text-muted);text-align:center;padding:20px">لا توجد خطط مضافة حالياً.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- تبويب خطط مجانية -->
+  <section id="freePlansView" class="view">
+    <div class="card">
+      <h3 style="margin-top:0">الخطط والملفات المجانية</h3>
+      <p style="font-size:13px;color:var(--text-muted)">تصفح وحمل الأدلة الطبية والغذائية المتوفرة:</p>
+      <div class="list" id="freePdfsList">
+        <div class="list-item">
+          <div><strong>دليل التغذية العلاجية للبدناء</strong><small>Guide_to_Therapeutic_Nutrition.pdf</small></div>
+          <a href="pdfs/Guide_to_Therapeutic_Nutrition.pdf" download class="secondary" style="padding:8px 14px;border-radius:10px;text-decoration:none;font-size:12px;display:inline-block">تحميل PDF</a>
+        </div>
+        <div class="list-item">
+          <div><strong>دليل جهاز الأنبدي وتحليل مكونات الجسم</strong><small>Guide_to_an_intrabody_device.pdf</small></div>
+          <a href="pdfs/Guide_to_an_intrabody_device.pdf" download class="secondary" style="padding:8px 14px;border-radius:10px;text-decoration:none;font-size:12px;display:inline-block">تحميل PDF</a>
+        </div>
+        <div class="list-item">
+          <div><strong>دليل التغذية العلاجية لمرضى الكلى</strong><small>Treatment_of_kidney_patients.pdf</small></div>
+          <a href="pdfs/Treatment_of_kidney_patients.pdf" download class="secondary" style="padding:8px 14px;border-radius:10px;text-decoration:none;font-size:12px;display:inline-block">تحميل PDF</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- تبويب حسابي -->
+  <section id="accountView" class="view">
+    <div class="card">
+      <h3 style="margin-top:0">إعدادات الحساب والبروفايل</h3>
+      <div style="text-align:center;margin-bottom:16px">
+        <div id="profileAvatarDisplay" style="width:70px;height:70px;border-radius:50%;background:var(--purple-btn);margin:auto;display:grid;place-items:center;font-size:28px;overflow:hidden;border:2px solid var(--purple-glow)">👤</div>
+        <input type="file" id="avatarFileInput" accept="image/*" class="hidden">
+        <button class="secondary" style="margin-top:10px;padding:6px 12px;font-size:12px" onclick="document.getElementById('avatarFileInput').click()">تغيير الصورة الشخصية</button>
+      </div>
+      
+      <div style="display:grid;gap:12px">
+        <div><label>البريد الإلكتروني</label><input id="accEmail" disabled></div>
+        <div><label>اسم صاحب الحساب</label><input id="accName" placeholder="الاسم الكامل"></div>
+        <div><label>اسم المستخدم (يوزرنيم)</label><input id="accUsername" placeholder="اليوزر">
+          <small style="color:var(--text-muted);font-size:11px">⚠️ ملاحظة: يمكنك تغيير اليوزر مرة واحدة كل أسبوع فقط.</small></div>
+        
+        <hr style="border-color:var(--purple-border);margin:10px 0">
+        
+        <div><label>كلمة المرور الحالية (للتحقق)</label><input id="accOldPass" type="password" placeholder="أدخل كلمة المرور الحالية للتأكيد"></div>
+        <div><label>كلمة المرور الجديدة</label><input id="accNewPass" type="password" placeholder="اتركه فارغاً إن لم تقم بتغييرها"></div>
+        
+        <button id="saveAccountChanges">حفظ التعديلات</button>
+        
+        <div id="developerSettingsCard" class="hidden" style="margin-top:20px;border:1px dashed var(--purple-glow);padding:14px;border-radius:14px">
+          <h4 style="margin:0 0 8px;color:var(--accent)">إعدادات المطور الخاصة</h4>
+          <label>بريد المطور الحالي (للنقل أو البيع)</label>
+          <input id="devEmailSetting" value="abdalqadr3518@gmail.com">
+          <button class="secondary" id="saveDevEmailBtn" style="margin-top:8px;width:100%">تحديث بريد المطور</button>
+          <div style="margin-top:14px">
+            <h5 style="margin:0 0 6px">سجل الأعضاء المسجلين</h5>
+            <div id="adminMembersList" class="list" style="max-height:200px;overflow-y:auto"></div>
+          </div>
+        </div>
+
+        <hr style="border-color:var(--purple-border);margin:10px 0">
+        <div style="display:flex;gap:10px">
+          <button class="danger" id="deleteAccountBtn" style="flex:1">حذف الحساب نهائياً</button>
+          <button class="secondary" id="logoutBtn" style="flex:1">تسجيل خروج</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- شريط التنقل السفلي -->
+<nav class="nav-bottom">
+  <button class="active" data-view="homeView">🏠 الرئيسية</button>
+  <button data-view="plansView" id="navPlansBtn">خطتي</button>
+  <button data-view="freePlansView">خطط مجانية</button>
+  <button data-view="accountView">حسابي</button>
+</nav>
+
 <script>
-const DEV_EMAIL = "abdalqadr3518@gmail.com";
-const DEV_PIN = "ABDALQADR_DEVELOPER";
+(()=>{
+'use strict';
+const DB_KEY='nutricore_app_db_v3';
+let db = JSON.parse(localStorage.getItem(DB_KEY) || JSON.stringify({
+  users: [],
+  plans: [],
+  ratings: [],
+  devEmail: 'abdalqadr3518@gmail.com'
+}));
 
-let db = JSON.parse(localStorage.getItem('nutricore_db') || '{"users":[], "plans":[], "ratings":[]}');
-let currentUser = JSON.parse(localStorage.getItem('nutricore_session') || 'null');
+let currentUser = JSON.parse(localStorage.getItem('nutricore_current_user') || 'null');
+let selectedRating = 0;
 
-function saveDb() {
-  localStorage.setItem('nutricore_db', JSON.stringify(db));
+function saveDb(){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+
+// تهيئة التطبيق وحالة الدخول
+function initApp(){
+  if(currentUser){
+    document.getElementById('authScreen').classList.add('hidden');
+    setupUserInterface();
+  } else {
+    document.getElementById('authScreen').classList.remove('hidden');
+  }
+  renderStats();
 }
 
-// التبديل بين واجهة الدخول وإنشاء الحساب
-document.getElementById('goToRegister').onclick = () => {
-  document.getElementById('loginForm').classList.add('hidden');
-  document.getElementById('registerForm').classList.remove('hidden');
-};
-document.getElementById('goToLogin').onclick = () => {
-  document.getElementById('registerForm').classList.add('hidden');
-  document.getElementById('loginForm').classList.remove('hidden');
-};
-
-// التحقق من بريد المطور أثناء الكتابة
-document.getElementById('loginEmail').oninput = (e) => {
-  const isDev = e.target.value.trim().toLowerCase() === DEV_EMAIL;
-  document.getElementById('devPasswordWrapper').classList.toggle('hidden', !isDev);
-};
+// تبديل التبويبات
+document.querySelectorAll('.nav-bottom button').forEach(btn=>{
+  btn.onclick = () => {
+    document.querySelectorAll('.nav-bottom button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.view).classList.add('active');
+    if(btn.dataset.view === 'accountView') loadAccountData();
+    if(btn.dataset.view === 'plansView') renderPlansView();
+  };
+});
 
 // تسجيل الدخول
 document.getElementById('loginForm').onsubmit = (e) => {
   e.preventDefault();
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPassword').value;
-  const remember = document.getElementById('rememberMe').checked;
-
-  if (email.toLowerCase() === DEV_EMAIL) {
-    const devPass = document.getElementById('devPasswordInput').value;
-    if (devPass !== DEV_PIN) {
-      document.getElementById('authError').textContent = 'كلمة سر المطور غير صحيحة!';
-      return;
-    }
-  }
-
-  const user = db.users.find(u => u.email === email && u.pass === pass);
-  if (!user && email.toLowerCase() !== DEV_EMAIL) {
-    document.getElementById('authError').textContent = 'البريد أو كلمة المرور غير صحيحة!';
-    return;
-  }
-
-  currentUser = user || { name: 'المطور أحمد', email: DEV_EMAIL, username: 'developer', role: 'admin' };
-  if (email.toLowerCase() === DEV_EMAIL) currentUser.role = 'admin';
-
-  if (remember) localStorage.setItem('nutricore_session', JSON.stringify(currentUser));
-  initApp();
-};
-
-// إنشاء حساب جديد
-document.getElementById('registerForm').onsubmit = (e) => {
-  e.preventDefault();
-  const username = document.getElementById('regUsername').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const pass = document.getElementById('regPassword').value;
-
-  if (db.users.some(u => u.username === username || u.email === email)) {
-    document.getElementById('authError').textContent = 'اليوزرنيم أو البريد مستخدم مسبقاً!';
-    return;
-  }
-
-  const newUser = { username, email, pass, name: username, avatar: '', lastUsernameChange: Date.now(), role: 'client' };
-  db.users.push(newUser);
-  saveDb();
-
-  alert('تم إنشاء الحساب بنجاح! تذكر يوزرنك جيداً: ' + username);
-  currentUser = newUser;
-  initApp();
-};
-
-// تشغيل التطبيق بعد الدخول
-function initApp() {
-  document.getElementById('authView').classList.add('hidden');
-  document.getElementById('mainAppView').classList.remove('hidden');
+  let loginInput = document.getElementById('loginEmail').value.trim();
+  let pass = document.getElementById('loginPass').value;
   
-  const isAdmin = currentUser.email.toLowerCase() === DEV_EMAIL;
-  document.getElementById('headerUserRole').textContent = isAdmin ? 'صلاحيات مطور 🛠️' : 'حساب عميل 👤';
-  document.getElementById('developerPanel').classList.toggle('hidden', !isAdmin);
-  document.getElementById('developerPlanCreator').classList.toggle('hidden', !isAdmin);
-  document.getElementById('navPlansBtn').querySelector('span').textContent = isAdmin ? 'خطط العملاء' : 'خطتي';
+  // فحص حساب المطور
+  if(loginInput.toLowerCase() === db.devEmail.toLowerCase()){
+    openDevModal(() => {
+      let devUser = { email: db.devEmail, username: 'Developer', isDev: true };
+      completeLogin(devUser);
+    });
+    return;
+  }
 
-  renderStats();
-  renderDevUsers();
-  renderPlans();
-  loadAccountInfo();
+  let found = db.users.find(u => (u.email === loginInput || u.username === loginInput) && u.pass === pass);
+  if(found){
+    completeLogin(found);
+  } else {
+    alert('بيانات الدخول غير صحيحة، أو البريد غير مسجل.');
+  }
+};
+
+function completeLogin(user){
+  currentUser = user;
+  if(document.getElementById('rememberMe').checked){
+    localStorage.setItem('nutricore_current_user', JSON.stringify(user));
+  }
+  document.getElementById('authScreen').classList.add('hidden');
+  initApp();
 }
 
-// التنقل بين التبويبات
-document.querySelectorAll('.nav-bottom button').forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
+// نافذة المطور
+function openDevModal(callback){
+  document.getElementById('devModal').classList.remove('hidden');
+  document.getElementById('devForm').onsubmit = (e) => {
+    e.preventDefault();
+    let secret = document.getElementById('devSecret').value;
+    if(secret === 'ABDALQADR_DEVELOPER'){
+      document.getElementById('devModal').classList.add('hidden');
+      callback();
+    } else {
+      alert('كلمة سر المطور غير صحيحة!');
+    }
   };
-});
+  document.getElementById('cancelDev').onclick = () => {
+    document.getElementById('devModal').classList.add('hidden');
+  };
+}
+
+// تسجيل حساب جديد
+document.getElementById('switchToRegister').onclick = () => {
+  document.getElementById('registerModal').classList.remove('hidden');
+};
+document.getElementById('cancelRegister').onclick = () => {
+  document.getElementById('registerModal').classList.add('hidden');
+};
+document.getElementById('registerForm').onsubmit = (e) => {
+  e.preventDefault();
+  let email = document.getElementById('regEmail').value.trim();
+  let pass = document.getElementById('regPass').value;
+  let username = document.getElementById('regUser').value.trim();
+  
+  if(db.users.some(u => u.username === username)){
+    alert('اسم المستخدم محجوز مسبقاً، اختر يوزراً آخر.');
+    return;
+  }
+  if(db.users.some(u => u.email === email)){
+    alert('البريد الإلكتروني مسجل مسبقاً.');
+    return;
+  }
+
+  let newUser = { id: Date.now(), email, pass, username, avatar: '', lastUsernameChange: 0 };
+  db.users.push(newUser);
+  saveDb();
+  alert('تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.');
+  document.getElementById('registerModal').classList.add('hidden');
+};
+
+// إعداد واجهة المستخدم حسب الصلاحيات
+function setupUserInterface(){
+  let isDev = currentUser.isDev;
+  let navPlansBtn = document.getElementById('navPlansBtn');
+  if(isDev){
+    navPlansBtn.textContent = 'خطط العملاء';
+    document.getElementById('developerPlanSection').classList.remove('hidden');
+    document.getElementById('developerSettingsCard').classList.remove('hidden');
+    renderAdminMembers();
+  } else {
+    navPlansBtn.textContent = 'خطتي';
+    document.getElementById('developerPlanSection').classList.add('hidden');
+    document.getElementById('developerSettingsCard').classList.add('hidden');
+  }
+}
 
 // التقييم
-let selectedRating = 0;
-document.querySelectorAll('#ratingStars span').forEach(star => {
-  star.onclick = (e) => {
-    selectedRating = parseInt(e.target.dataset.v);
-    document.querySelectorAll('#ratingStars span').forEach((s, idx) => {
-      s.classList.toggle('active', idx < selectedRating);
+document.querySelectorAll('.star').forEach(star=>{
+  star.onclick = () => {
+    selectedRating = Number(star.dataset.value);
+    document.querySelectorAll('.star').forEach(s=>{
+      s.classList.toggle('active', Number(s.dataset.value) <= selectedRating);
     });
   };
 });
-
 document.getElementById('submitRatingBtn').onclick = () => {
-  if (!selectedRating) return alert('اختر نجوم التقييم أولاً');
+  if(selectedRating === 0){ alert('اختر نجوم التقييم أولاً.'); return; }
   db.ratings.push(selectedRating);
   saveDb();
   renderStats();
-  alert('شكراً لتقييمك التطبيق!');
+  alert('شكراً لك! تم تسجيل تقييمك بنجاح.');
 };
 
-function renderStats() {
-  document.getElementById('statTotalUsers').textContent = db.users.length;
-  document.getElementById('statTotalPlans').textContent = db.plans.length;
-  
-  const avgRating = db.ratings.length ? Math.round((db.ratings.reduce((a,b)=>a+b,0) / db.ratings.length) * 20) : 0;
-  document.getElementById('statRatingVal').textContent = avgRating + '%';
+// إحصائيات التطبيق
+function renderStats(){
+  document.getElementById('statUsers').textContent = db.users.length + 1; // +1 للمطور
+  document.getElementById('statPlansCount').textContent = db.plans.length;
+  let avgRating = db.ratings.length ? (db.ratings.reduce((a,b)=>a+b,0)/db.ratings.length).toFixed(1) : '0';
+  document.getElementById('statRating').textContent = avgRating + ' / 5';
 }
 
-// لوحة المطور لإدارة الأعضاء
-function renderDevUsers() {
-  const container = document.getElementById('devUsersList');
-  if (!container) return;
-  container.innerHTML = db.users.length ? db.users.map(u => `
+// إدارة الخطط
+document.getElementById('saveClientPlanBtn').onclick = () => {
+  let query = document.getElementById('targetUserQuery').value.trim();
+  let title = document.getElementById('planTitleInput').value.trim();
+  let content = document.getElementById('planContentInput').value.trim();
+  if(!query || !title || !content){ alertاملء كافة الحقول.'); return; }
+  
+  db.plans.push({ id: Date.now(), target: query, title, content, date: new Date().toLocaleDateString() });
+  saveDb();
+  alert('تم إرسال الخطة بنجاح لحساب العميل المستهدف!');
+  document.getElementById('targetUserQuery').value = '';
+  document.getElementById('planTitleInput').value = '';
+  document.getElementById('planContentInput').value = '';
+};
+
+function renderPlansView(){
+  let container = document.getElementById('myPlansContainer');
+  let filtered = currentUser.isDev ? db.plans : db.plans.filter(p => p.target === currentUser.username || p.target === currentUser.email);
+  
+  if(!filtered.length){
+    container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px">لا توجد خطط غذائية مرسلة لك حتى الآن.</div>';
+    return;
+  }
+  
+  container.innerHTML = filtered.map(p => `
     <div class="list-item">
       <div>
-        <strong>${u.name} (@${u.username})</strong>
-        <small style="color:var(--muted)">${u.email} | كلمة المرور: ${u.pass}</small>
+        <strong>${escapeHtml(p.title)}</strong>
+        <small style="color:var(--text-muted)">موجه إلى: ${escapeHtml(p.target)} | التاريخ: ${p.date}</small>
+        <p style="margin:6px 0 0;font-size:13px">${escapeHtml(p.content)}</p>
       </div>
-      <button class="small danger" onclick="deleteUser('${u.username}')">حذف</button>
+      ${!currentUser.isDev ? `<button class="secondary" onclick="exportPlanPdf('${p.title}', '${p.content}')" style="font-size:11px;padding:6px 10px">تصدير ملف الخطة PDF</button>` : ''}
     </div>
-  `).join('') : '<p style="color:var(--muted)">لا توجد حسابات مسجلة بعد.</p>';
+  `).join('');
 }
 
-window.deleteUser = (username) => {
-  if (confirm('هل أنت متأكد من حذف هذا الحساب؟')) {
-    db.users = db.users.filter(u => u.username !== username);
+// تصدير الخطة PDF للعميل
+window.exportPlanPdf = function(title, content){
+  let win = window.open('', '_blank');
+  win.document.write(`<html><head><title>${title}</title><style>body{font-family:Tahoma;padding:30px;direction:rtl;color:#111}</style></head><body><h1>${title}</h1><hr><p style="white-space:pre-wrap">${content}</p><br><p style="color:#666;font-size:12px">جميع الحقوق محفوظة لـ "أحمد الهوى" 2026 ©</p></body></html>`);
+  win.document.close();
+  win.print();
+};
+
+// حسابي والتعديلات
+function loadAccountData(){
+  if(currentUser.isDev){
+    document.getElementById('accEmail').value = currentUser.email;
+    document.getElementById('accName').value = 'المطور الرئيسي';
+    document.getElementById('accUsername').value = 'Developer';
+    return;
+  }
+  let u = db.users.find(x => x.email === currentUser.email);
+  if(u){
+    document.getElementById('accEmail').value = u.email;
+    document.getElementById('accName').value = u.name || '';
+    document.getElementById('accUsername').value = u.username || '';
+  }
+}
+
+document.getElementById('avatarFileInput').onchange = (e) => {
+  let file = e.target.files[0];
+  if(file){
+    let reader = new FileReader();
+    reader.onload = (evt) => {
+      let base64 = evt.target.result;
+      document.getElementById('profileAvatarDisplay').innerHTML = `<img src="${base64}" style="width:100%;height:100%;object-fit:cover">`;
+      if(!currentUser.isDev){
+        let u = db.users.find(x => x.email === currentUser.email);
+        if(u){ u.avatar = base64; saveDb(); }
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+document.getElementById('saveAccountChanges').onclick = () => {
+  if(currentUser.isDev){ alert('حساب المطور له صلاحيات خاصة.'); return; }
+  let u = db.users.find(x => x.email === currentUser.email);
+  let oldPass = document.getElementById('accOldPass').value;
+  let newPass = document.getElementById('accNewPass').value;
+  let newName = document.getElementById('accName').value.trim();
+  let newUsername = document.getElementById('accUsername').value.trim();
+
+  if(oldPass !== u.pass){
+    alert('كلمة المرور الحالية غير صحيحة للتحقق.');
+    return;
+  }
+
+  // قيود تغيير اليوزرنيم (مرة كل أسبوع)
+  if(newUsername !== u.username){
+    let now = Date.now();
+    let weekMs = 7 * 24 * 60 * 60 * 1000;
+    if(now - (u.lastUsernameChange || 0) < weekMs){
+      alert('تنبيه: لن تتمكن من تغيير اليوزر إلا مرة في الأسبوع!');
+      return;
+    }
+    if(db.users.some(x => x.username === newUsername)){
+      alert('اليوزر الجديد مستخدم بالفعل من قبل شخص آخر.');
+      return;
+    }
+    u.username = newUsername;
+    u.lastUsernameChange = now;
+  }
+
+  u.name = newName;
+  if(newPass) u.pass = newPass;
+  saveDb();
+  currentUser = u;
+  localStorage.setItem('nutricore_current_user', JSON.stringify(u));
+  alert('تم تحديث بيانات الحساب بنجاح ✅');
+  document.getElementById('accOldPass').value = '';
+  document.getElementById('accNewPass').value = '';
+};
+
+// حذف الحساب نهائياً
+document.getElementById('deleteAccountBtn').onclick = () => {
+  if(currentUser.isDev){ alert('لا يمكن حذف حساب المطور.'); return; }
+  let pass = prompt('لتأكيد حذف الحساب نهائياً، يرجى كتابة كلمة المرور الخاصة بك:');
+  let u = db.users.find(x => x.email === currentUser.email);
+  if(pass === u.pass){
+    db.users = db.users.filter(x => x.email !== currentUser.email);
     saveDb();
-    renderDevUsers();
+    logoutApp();
+  } else {
+    alert('كلمة المرور غير صحيحة، تم إلغاء عملية الحذف.');
+  }
+};
+
+// تسجيل خروج
+function logoutApp(){
+  localStorage.removeItem('nutricore_current_user');
+  location.reload();
+}
+document.getElementById('logoutBtn').onclick = logoutApp;
+document.getElementById('logoutTopBtn').onclick = logoutApp;
+
+// لوحة تحكم المطور وإدارة الأعضاء
+function renderAdminMembers(){
+  let list = document.getElementById('adminMembersList');
+  if(!db.users.length){
+    list.innerHTML = '<div style="color:var(--text-muted);font-size:12px">لا يوجد أعضاء مسجلين بعد.</div>';
+    return;
+  }
+  list.innerHTML = db.users.map(u => `
+    <div class="list-item" style="font-size:12px">
+      <div>
+        <strong>${escapeHtml(u.username)}</strong>
+        <small style="color:var(--text-muted)">الإيميل: ${escapeHtml(u.email)} | الباسورد: ${escapeHtml(u.pass)}</small>
+      </div>
+      <button class="danger" style="padding:4px 8px;font-size:11px" onclick="deleteMember('${u.email}')">حذف</button>
+    </div>
+  `).join('');
+}
+
+window.deleteMember = function(email){
+  if(confirm('هل أنت متأكد من حذف هذا العضو نهائياً؟')){
+    db.users = db.users.filter(x => x.email !== email);
+    saveDb();
+    renderAdminMembers();
     renderStats();
   }
 };
 
-// إدارة الخطط
-document.getElementById('sendPlanBtn').onclick = () => {
-  const targetUser = document.getElementById('targetUsernames').value.trim();
-  const content = document.getElementById('planContentText').value.trim();
-  if (!targetUser || !content) return alert('الرجاء تعبئة الحقول');
-
-  db.plans.push({ targetUser, content, date: new Date().toLocaleDateString() });
-  saveDb();
-  alert('تم إرسال الخطة بنجاح للعميل');
-  document.getElementById('planContentText').value = '';
-  renderPlans();
-};
-
-function renderPlans() {
-  const container = document.getElementById('userPlansContainer');
-  const isAdmin = currentUser.email.toLowerCase() === DEV_EMAIL;
-  
-  let userPlans = isAdmin ? db.plans : db.plans.filter(p => p.targetUser === currentUser.username);
-  
-  container.innerHTML = userPlans.length ? userPlans.map((p, idx) => `
-    <div class="list-item" style="flex-direction:column;align-items:flex-start;gap:8px">
-      <div><strong>خطة موجهة إلى: @${p.targetUser}</strong> <small style="color:var(--muted)">${p.date}</small></div>
-      <p style="margin:0;font-size:14px">${p.content}</p>
-      ${!isAdmin ? `<button class="small secondary" onclick="exportPdfPlan(\`${p.content}\`)">تصدير ملف الخطة (PDF)</button>` : ''}
-    </div>
-  `).join('') : '<p style="color:var(--muted)">لا توجد خطط غذائية متاحة حالياً.</p>';
-}
-
-window.exportPdfPlan = (content) => {
-  window.print(); // يستخدم خدمة الطباعة وحفظ PDF في المتصفح/الجهاز
-};
-
-// إدارة الحساب الشخصي
-function loadAccountInfo() {
-  document.getElementById('accName').value = currentUser.name || '';
-  document.getElementById('accUsername').value = currentUser.username || '';
-  document.getElementById('accAvatar').value = currentUser.avatar || '';
-}
-
-document.getElementById('saveAccountChanges').onclick = () => {
-  const newName = document.getElementById('accName').value.trim();
-  const newUsername = document.getElementById('accUsername').value.trim();
-  const newAvatar = document.getElementById('accAvatar').value.trim();
-  const oldPass = document.getElementById('oldPasswordAcc').value;
-  const newPass = document.getElementById('newPasswordAcc').value;
-
-  if (oldPass && oldPass !== currentUser.pass) {
-    return alert('كلمة المرور القديمة غير صحيحة!');
-  }
-
-  if (newUsername !== currentUser.username) {
-    const lastChange = currentUser.lastUsernameChange || 0;
-    const weekMs = 7 * 24 * 60 * 60 * 1000;
-    if (Date.now() - lastChange < weekMs) {
-      return alert('عذراً، لن تتمكن من تغيير اليوزر إلا مرة واحدة كل أسبوع!');
-    }
-    currentUser.username = newUsername;
-    currentUser.lastUsernameChange = Date.now();
-  }
-
-  currentUser.name = newName;
-  currentUser.avatar = newAvatar;
-  if (newPass) currentUser.pass = newPass;
-
-  // تحديث قاعدة البيانات العامة
-  const idx = db.users.findIndex(u => u.email === currentUser.email);
-  if (idx !== -1) db.users[idx] = currentUser;
-  saveDb();
-  localStorage.setItem('nutricore_session', JSON.stringify(currentUser));
-  alert('تم تحديث البيانات بنجاح ✅');
-};
-
-document.getElementById('logoutBtn').onclick = () => {
-  localStorage.removeItem('nutricore_session');
-  location.reload();
-};
-
-document.getElementById('deleteAccountBtn').onclick = () => {
-  const pass = document.getElementById('deleteAccPassword').value;
-  if (pass !== currentUser.pass) return alert('كلمة المرور غير صحيحة!');
-  if (confirm('هل أنت متأكد من حذف حسابك نهائياً؟')) {
-    db.users = db.users.filter(u => u.email !== currentUser.email);
+document.getElementById('saveDevEmailBtn').onclick = () => {
+  let newDevEmail = document.getElementById('devEmailSetting').value.trim();
+  if(newDevEmail){
+    db.devEmail = newDevEmail;
     saveDb();
-    localStorage.removeItem('nutricore_session');
-    location.reload();
+    alert('تم تحديث بريد المطور بنجاح ✅');
   }
 };
 
-// التشغيل التلقائي إن وُجد "تذكرني"
-if (currentUser) {
-  initApp();
-}
+function escapeHtml(str){ return String(str||'').replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+
+initApp();
+})();
 </script>
 </body>
 </html>
