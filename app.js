@@ -1,12 +1,10 @@
-// بيانات المطور الرئيسية (تُمكّن من بيع التطبيق بتغيير البريد والرمز هنا)
 let DEVELOPER_CONFIG = {
     email: "lionking1111112211@gmail.com",
     passkey: "AHMED_DEVELOPER"
 };
 
-// قواعد البيانات المخزنة محلياً (المحاكاة الهيكلية)
 let db = {
-    users: JSON.parse(localStorage.getItem('nutri_users')) || [],
+    users: [],
     plans: JSON.parse(localStorage.getItem('nutri_plans')) || [],
     ratings: JSON.parse(localStorage.getItem('nutri_ratings')) || [5, 5, 5, 4]
 };
@@ -15,7 +13,6 @@ let currentUser = null;
 let isSignUpMode = false;
 let selectedRating = 0;
 
-// عناصر الواجهة
 const authScreen = document.getElementById('auth-screen');
 const mainApp = document.getElementById('main-app');
 const authForm = document.getElementById('auth-form');
@@ -28,16 +25,41 @@ const btnToggleMode = document.getElementById('btn-toggle-mode');
 const rememberMeCheck = document.getElementById('remember-me');
 const devModal = document.getElementById('dev-modal');
 
-// عند التحميل الفوري للواجهة
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadDatabase();
     checkAutoLogin();
     setupEventListeners();
     updateStatsUI();
 });
 
-// إعداد الاستماعات
+// تحميل البيانات من ملف users-db.json في المستودع مع دمج التخزين المحلي الاحتياطي
+async function loadDatabase() {
+    try {
+        const response = await fetch('users-db.json?' + new Date().getTime());
+        if (response.ok) {
+            const data = await response.json();
+            if (data && Array.isArray(data.users)) {
+                db.users = data.users;
+            }
+        }
+    } catch (e) {
+        console.log('Using local backup storage for users');
+    }
+    
+    // دمج المستخدمين المحليين لضمان عدم ضياع أي حساب تم تسجيله مسبقاً
+    let localUsers = JSON.parse(localStorage.getItem('nutri_users')) || [];
+    localUsers.forEach(lu => {
+        if (!db.users.find(u => u.email === lu.email || u.username === lu.username)) {
+            db.users.push(lu);
+        }
+    });
+}
+
+function syncUsersStorage() {
+    localStorage.setItem('nutri_users', JSON.stringify(db.users));
+}
+
 function setupEventListeners() {
-    // تبديل بين الدخول وإنشاء الحساب
     btnToggleMode.addEventListener('click', () => {
         isSignUpMode = !isSignUpMode;
         if (isSignUpMode) {
@@ -51,13 +73,11 @@ function setupEventListeners() {
         }
     });
 
-    // تقديم نموذج الدخول / التسجيل
     authForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const inputVal = emailInput.value.trim();
         const passVal = passwordInput.value.trim();
 
-        // التحقق من هوية المطور أولاً
         if (inputVal === DEVELOPER_CONFIG.email) {
             devModal.classList.remove('hidden');
             return;
@@ -70,7 +90,6 @@ function setupEventListeners() {
         }
     });
 
-    // تأكيد المطور
     document.getElementById('btn-dev-confirm').addEventListener('click', () => {
         const inputPass = document.getElementById('dev-pass-input').value;
         if (inputPass === DEVELOPER_CONFIG.passkey) {
@@ -85,19 +104,15 @@ function setupEventListeners() {
         devModal.classList.add('hidden');
     });
 
-    // التنقل بين التبويبات
     document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            
             btn.classList.add('active');
-            const targetTab = btn.getAttribute('data-tab');
-            document.getElementById(targetTab).classList.add('active');
+            document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
         });
     });
 
-    // النجوم والتقييم
     const stars = document.querySelectorAll('#stars-wrapper .star');
     stars.forEach(star => {
         star.addEventListener('click', () => {
@@ -117,16 +132,12 @@ function setupEventListeners() {
         alert('شكراً على تقييمك التطبيق!');
     });
 
-    // إنشاء خطة (للمطور)
     document.getElementById('btn-save-plan').addEventListener('click', createNewPlan);
-
-    // تغيير بيانات البروفايل
     document.getElementById('btn-update-profile').addEventListener('click', updateProfile);
     document.getElementById('btn-change-pass').addEventListener('click', changePassword);
     document.getElementById('btn-logout').addEventListener('click', logout);
     document.getElementById('btn-delete-account').addEventListener('click', deleteAccount);
 
-    // معالجة صورة البروفايل
     document.getElementById('profile-img-input').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -143,11 +154,9 @@ function setupEventListeners() {
     });
 }
 
-// إنشاء حساب جديد
 function handleSignUp(email, username, password) {
     if (!username) return alert('الرجاء كتابة اسم المستخدم (Username)');
     
-    // التحقق من التكرار
     const exist = db.users.find(u => u.email === email || u.username === username);
     if (exist) return alert('البريد أو اليوزرنيم مستخدم مسبقاً!');
 
@@ -163,14 +172,11 @@ function handleSignUp(email, username, password) {
     };
 
     db.users.push(newUser);
-    saveUserData();
+    syncUsersStorage();
     alert('تم إنشاء الحساب بنجاح! احتفظ باليوزرنيم جيداً: ' + username);
-    
-    // تسجيل الدخول بالجديد
     setCurrentUser(newUser);
 }
 
-// تسجيل الدخول العادي
 function handleLogin(identifier, password) {
     const user = db.users.find(u => (u.email === identifier || u.username === identifier) && u.password === password);
     if (user) {
@@ -180,7 +186,6 @@ function handleLogin(identifier, password) {
     }
 }
 
-// دخول المطور
 function loginAsDev() {
     let devUser = db.users.find(u => u.email === DEVELOPER_CONFIG.email);
     if (!devUser) {
@@ -194,21 +199,20 @@ function loginAsDev() {
             avatar: 'https://via.placeholder.com/100'
         };
         db.users.push(devUser);
-        saveUserData();
+        syncUsersStorage();
     }
     setCurrentUser(devUser);
 }
 
-// تعيين الجلسة الحالية
 function setCurrentUser(user) {
     currentUser = user;
+    // تفعيل وظيفة "تذكرني" وحفظ الجلسة الدائمة
     if (rememberMeCheck.checked) {
         localStorage.setItem('nutri_remembered_user', JSON.stringify(user.id));
     }
     launchMainApp();
 }
 
-// التذكر التلقائي عند الرجوع للتطبيق
 function checkAutoLogin() {
     const savedId = localStorage.getItem('nutri_remembered_user');
     if (savedId) {
@@ -220,13 +224,11 @@ function checkAutoLogin() {
     }
 }
 
-// تشغيل الواجهة الرئيسية بعد الدخول
 function launchMainApp() {
     authScreen.classList.remove('active');
     authScreen.classList.add('hidden');
     mainApp.classList.remove('hidden');
 
-    // إعداد واجهة المطور أم المستخدم
     const plansNavBtn = document.getElementById('nav-plans-btn');
     const plansTitle = document.getElementById('plans-tab-title');
     const devCreatePlanBox = document.getElementById('dev-create-plan');
@@ -250,24 +252,20 @@ function launchMainApp() {
     updateStatsUI();
 }
 
-// تحديث الإحصائيات بالواجهة
 function updateStatsUI() {
     document.getElementById('stat-users').innerText = db.users.length;
     document.getElementById('stat-plans').innerText = db.plans.length;
-    
-    // التقييم المتوسط
     if (db.ratings.length > 0) {
         const avg = (db.ratings.reduce((a, b) => a + b, 0) / db.ratings.length).toFixed(1);
         document.getElementById('stat-rating').innerText = avg + ' ★';
     }
 }
 
-// عرض قائمة أعضاء السجل المخصص للمطور
 function renderAdminUsersTable() {
     const tbody = document.getElementById('users-table-body');
     tbody.innerHTML = '';
     db.users.forEach(u => {
-        if (u.isDev) return; // عدم حذف الحساب الرئيسي
+        if (u.isDev) return;
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${u.username}</td>
@@ -282,13 +280,12 @@ function renderAdminUsersTable() {
 function adminDeleteUser(userId) {
     if (confirm('هل أنت تأكد من حذف حساب هذا المستخدم؟')) {
         db.users = db.users.filter(u => u.id !== userId);
-        saveUserData();
+        syncUsersStorage();
         renderAdminUsersTable();
         updateStatsUI();
     }
 }
 
-// إضافة خطة غذائية للعميل
 function createNewPlan() {
     const targetUser = document.getElementById('plan-target-user').value.trim();
     const title = document.getElementById('plan-title').value.trim();
@@ -316,15 +313,13 @@ function createNewPlan() {
     updateStatsUI();
 }
 
-// عرض الخطط
 function renderPlans() {
     const container = document.getElementById('plans-list');
     container.innerHTML = '';
 
-    // تصفية الخطط
     let userPlans = [];
     if (currentUser.isDev) {
-        userPlans = db.plans; // المطور يرى كل الخطط
+        userPlans = db.plans;
     } else {
         userPlans = db.plans.filter(p => p.targetUser === currentUser.username);
     }
@@ -350,7 +345,6 @@ function renderPlans() {
     });
 }
 
-// تصدير الخطة بملف PDF
 function exportPlanPDF(title, content) {
     const element = document.createElement('div');
     element.style.padding = '20px';
@@ -365,11 +359,9 @@ function exportPlanPDF(title, content) {
         <br><br>
         <p style="text-align:center; font-size: 12px; color: #555;">جميع الحقوق محفوظة لـِ أحمد الهوى 2026 ©</p>
     `;
-    
     html2pdf().from(element).save(`${title}.pdf`);
 }
 
-// إدارة البروفايل
 function loadProfileData() {
     document.getElementById('prof-fullname').value = currentUser.fullName || '';
     document.getElementById('prof-username').value = currentUser.username || '';
@@ -383,10 +375,9 @@ function updateProfile() {
     const newUsername = document.getElementById('prof-username').value.trim();
 
     if (newUsername !== currentUser.username) {
-        // فحص قيد التغيير مرة كل أسبوع
         const now = Date.now();
         const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        if (currentUser.lastUsernameChange && (now - currentUser.lastUsernameChange < oneWeek)) {
+        if (currentUser.lastUsernameChange && (now - currentUser.lastUsernameCheck < oneWeek)) {
             alert('عذراً، لن تتمكن من تغيير اليوزر إلا مرة في الأسبوع!');
             return;
         }
@@ -403,9 +394,7 @@ function changePassword() {
     const oldP = document.getElementById('pass-old').value;
     const newP = document.getElementById('pass-new').value;
 
-    if (oldP !== currentUser.password) {
-        return alert('كلمة المرور القديمة غير صحيحة!');
-    }
+    if (oldP !== currentUser.password) return alert('كلمة المرور القديمة غير صحيحة!');
     if (!newP) return alert('يرجى كتابة كلمة المرور الجديدة');
 
     currentUser.password = newP;
@@ -422,7 +411,7 @@ function deleteAccount() {
     const passConfirm = prompt('لتأكيد حذف الحساب نهائياً، يرجى كتابة كلمة المرور الخاصة بك:');
     if (passConfirm === currentUser.password) {
         db.users = db.users.filter(u => u.id !== currentUser.id);
-        saveUserData();
+        syncUsersStorage();
         alert('تم حذف حسابك بنجاح.');
         logout();
     } else if(passConfirm !== null) {
@@ -431,8 +420,7 @@ function deleteAccount() {
 }
 
 function saveUserData() {
-    // تحديث العضو في المصفوفة الرئيسية
     const idx = db.users.findIndex(u => u.id === currentUser.id);
     if (idx !== -1) db.users[idx] = currentUser;
-    localStorage.setItem('nutri_users', JSON.stringify(db.users));
+    syncUsersStorage();
 }
